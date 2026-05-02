@@ -232,7 +232,7 @@ class Exporter():
             if not parsed_data:
                 self.status.set(0)
                 return
-            if not bool(self.config['clients_table_enabled']):
+            if self.config['clients_table_enabled'].lower() != 'true':
                 clients_table = []
             else:
                 clients_table = self.read_clients_table(self.config['clients_table_file'])
@@ -276,8 +276,8 @@ if __name__ == '__main__':
     log.info('Starting AmneziaWG exporter')
     config = Decouwrapper()
     exporter_config = {
-        'scrape_interval': config('AWG_EXPORTER_SCRAPE_INTERVAL', default=60),
-        'http_port': config('AWG_EXPORTER_HTTP_PORT', default=9351),
+        'scrape_interval': config('AWG_EXPORTER_SCRAPE_INTERVAL', default=60, cast=int),
+        'http_port': config('AWG_EXPORTER_HTTP_PORT', default=9351, cast=int),
         'addr': config('AWG_EXPORTER_LISTEN_ADDR', default='0.0.0.0'),
         'metrics_file': config('AWG_EXPORTER_METRICS_FILE', default='/tmp/prometheus/awg.prom'),
         'ops_mode': config('AWG_EXPORTER_OPS_MODE', default='http'),
